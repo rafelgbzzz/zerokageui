@@ -21,8 +21,9 @@
       "id": "dpl_9rja46xre8i",
       "username": "zero",
       "amount": 1000,
-      "status": "PENDING",
-      "createdAt": "2026-07-17T20:49:06.591Z"
+      "status": "PAID",
+      "createdAt": "2026-07-17T20:49:06.591Z",
+      "processedAt": "2026-07-17T20:49:10.297Z"
     }
   ],
   "riwayat": []
