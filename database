@@ -13,8 +13,9 @@
       "id": "dpl_3a9443fabyf",
       "username": "zero",
       "amount": 5000,
-      "status": "PENDING",
-      "createdAt": "2026-07-17T20:47:48.213Z"
+      "status": "PAID",
+      "createdAt": "2026-07-17T20:47:48.213Z",
+      "processedAt": "2026-07-17T20:47:50.327Z"
     }
   ],
   "riwayat": []
