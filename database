@@ -12,7 +12,7 @@
       "pass": "123",
       "role": "User",
       "status": "online",
-      "saldo": 5000
+      "saldo": 6000
     }
   ],
   "riwayat": [
@@ -21,6 +21,12 @@
       "nominal": 5000,
       "type": "qris_sociabuzz",
       "date": "17/07/2026, 22.10.15"
+    },
+    {
+      "user": "budi",
+      "nominal": 1000,
+      "type": "qris_sociabuzz",
+      "date": "17/7/2026, 23.55.11"
     }
   ]
 }
