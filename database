@@ -2,7 +2,7 @@
   "users": [
     {
       "user": "zero",
-      "password": "123",
+      "pass": "123",
       "saldo": 0,
       "status": "offline",
       "role": "user"
