@@ -3,7 +3,7 @@
     {
       "user": "zero",
       "pass": "123",
-      "saldo": 100000000000,
+      "saldo": 1000000000,
       "status": "online",
       "role": "user"
     }
