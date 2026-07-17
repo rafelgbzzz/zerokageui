@@ -1,40 +1,93 @@
 name: Send OTP Email
+
 on:
-  push:
-    paths:
-      - 'database.json'
+  workflow_dispatch:
+    inputs:
+      target_email:
+        description: 'Email tujuan penerima OTP'
+        required: true
+        type: string
+      otp_code:
+        description: 'Kode OTP yang dihasilkan dari website'
+        required: true
+        type: string
 
 jobs:
-  send-email:
+  send-otp-job:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Send OTP
+      - name: Kirim Email OTP via SMTP
         uses: dawiddr6/action-send-mail@v3
         with:
+          # Konfigurasi server SMTP Gmail
           server_address: smtp.gmail.com
           server_port: 465
+          
+          # Kredensial SMTP yang disimpan aman di GitHub Secrets
           username: ${{ secrets.EMAIL_USER }}
           password: ${{ secrets.EMAIL_PASS }}
-          subject: '⚠️ Notifikasi User Baru - Sistem'
+          
+          # Detail Email yang dikirim
+          subject: 'Verifikasi Keamanan - Kode OTP ZeroKageUI'
+          to: ${{ github.event.inputs.target_email }}
+          from: ZeroKageUI Security <noreply@github.com>
+          
+          # Tampilan isi email (HTML + CSS Glassmorphism / Cyber Style)
           html_body: |
-            <div style="font-family: Arial, sans-serif; padding: 30px; border: 1px solid #e5e7eb; border-radius: 15px; max-width: 500px; margin: auto; background-color: #f9fafb;">
-              <h2 style="color: #1e40af; text-align: center;">Halo Admin!</h2>
-              <p style="color: #374151; font-size: 16px;">Ada aktivitas registrasi baru pada sistem dashboard kamu.</p>
-              <div style="background-color: white; padding: 15px; border-radius: 10px; border-left: 5px solid #1e40af; margin: 20px 0;">
-                <p style="margin: 0;">Silakan periksa file <b>database.json</b> di repository GitHub untuk melihat detail lengkap pendaftar terbaru.</p>
-              </div>
-              <div style="text-align: center; margin-top: 30px;">
-                <a href="https://t.me/USERNAME_OWNER" 
-                   style="background: linear-gradient(90deg, #1e40af, #3b82f6); color: white; padding: 15px 25px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">
-                   Hubungi Owner Sekarang
-                </a>
-              </div>
-              <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px;">
-                Sistem Keamanan Otomatis - ZeroKage
-              </p>
-            </div>
-          to: ${{ secrets.EMAIL_USER }}
-          from: GitHub Actions <noreply@github.com>
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="utf-8">
+              <title>OTP Verification</title>
+            </head>
+            <body style="margin: 0; padding: 0; background-color: #f4f7fe; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+                <tr>
+                  <td align="center" style="padding: 40px 10px;">
+                    <!-- Card Container -->
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 480px; background-color: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+                      
+                      <!-- Header Blue Stripe -->
+                      <tr>
+                        <td align="center" style="background-color: #2563eb; padding: 40px 20px;">
+                          <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 1px;">ZeroKageUI</h1>
+                          <p style="color: #bfdbfe; margin: 10px 0 0 0; font-size: 14px;">Secure Gateway Access</p>
+                        </td>
+                      </tr>
+                      
+                      <!-- Body Content -->
+                      <tr>
+                        <td style="padding: 40px 30px; text-align: center;">
+                          <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 20px; font-weight: 600;">Verifikasi Akun Baru</h2>
+                          <p style="color: #64748b; font-size: 15px; line-height: 1.6; margin: 0 0 30px 0;">
+                            Gunakan kode OTP di bawah ini untuk mengaktifkan akun pendaftaran kamu di sistem ZeroKage. Kode ini hanya berlaku untuk sesi registrasi saat ini.
+                          </p>
+                          
+                          <!-- OTP Display Box -->
+                          <div style="background-color: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; margin-bottom: 30px;">
+                            <span style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #2563eb;">${{ github.event.inputs.otp_code }}</span>
+                          </div>
+                          
+                          <p style="color: #ef4444; font-size: 12px; margin: 0 0 30px 0; font-weight: 600;">
+                            PERINGATAN: Jangan berikan kode ini kepada siapa pun termasuk staf ZeroKage.
+                          </p>
+                        </td>
+                      </tr>
+                      
+                      <!-- Footer -->
+                      <tr>
+                        <td align="center" style="background-color: #f8fafc; padding: 24px; border-top: 1px solid #e2e8f0;">
+                          <p style="color: #94a3b8; font-size: 12px; margin: 0;">
+                            Butuh bantuan? Hubungi <a href="https://t.me/ZeroKageUi" style="color: #2563eb; text-decoration: none; font-weight: bold;">Telegram Support</a>
+                          </p>
+                          <p style="color: #94a3b8; font-size: 11px; margin: 8px 0 0 0;">
+                            &copy; 2026 ZeroKage Workspace. All rights reserved.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </body>
+            </html>
