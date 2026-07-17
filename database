@@ -2,61 +2,12 @@
   "users": [
     {
       "user": "zero",
-      "pass": "123",
-      "role": "Admin",
+      "password": "123",
+      "saldo": 0,
       "status": "offline",
-      "saldo": 250000
-    },
-    {
-      "user": "budi",
-      "pass": "123",
-      "role": "User",
-      "status": "online",
-      "saldo": 11000
+      "role": "user"
     }
   ],
-  "riwayat": [
-    {
-      "user": "Budi",
-      "nominal": 5000,
-      "type": "qris_sociabuzz",
-      "date": "17/07/2026, 22.10.15"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_sociabuzz",
-      "date": "17/7/2026, 23.55.11"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_sociabuzz",
-      "date": "17/7/2026, 23.55.12"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_sociabuzz",
-      "date": "17/7/2026, 23.55.36"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_sociabuzz",
-      "date": "18/7/2026, 00.10.16"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_saweria",
-      "date": "18/7/2026, 00.45.50"
-    },
-    {
-      "user": "budi",
-      "nominal": 1000,
-      "type": "qris_saweria",
-      "date": "18/7/2026, 01.00.58"
-    }
-  ]
+  "transactions": [],
+  "riwayat": []
 }
