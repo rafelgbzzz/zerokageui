@@ -1,0 +1,40 @@
+name: Send OTP Email
+on:
+  push:
+    paths:
+      - 'database.json'
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send OTP
+        uses: dawiddr6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: '⚠️ Notifikasi User Baru - Sistem'
+          html_body: |
+            <div style="font-family: Arial, sans-serif; padding: 30px; border: 1px solid #e5e7eb; border-radius: 15px; max-width: 500px; margin: auto; background-color: #f9fafb;">
+              <h2 style="color: #1e40af; text-align: center;">Halo Admin!</h2>
+              <p style="color: #374151; font-size: 16px;">Ada aktivitas registrasi baru pada sistem dashboard kamu.</p>
+              <div style="background-color: white; padding: 15px; border-radius: 10px; border-left: 5px solid #1e40af; margin: 20px 0;">
+                <p style="margin: 0;">Silakan periksa file <b>database.json</b> di repository GitHub untuk melihat detail lengkap pendaftar terbaru.</p>
+              </div>
+              <div style="text-align: center; margin-top: 30px;">
+                <a href="https://t.me/USERNAME_OWNER" 
+                   style="background: linear-gradient(90deg, #1e40af, #3b82f6); color: white; padding: 15px 25px; text-decoration: none; border-radius: 10px; font-weight: bold; display: inline-block;">
+                   Hubungi Owner Sekarang
+                </a>
+              </div>
+              <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px;">
+                Sistem Keamanan Otomatis - ZeroKage
+              </p>
+            </div>
+          to: ${{ secrets.EMAIL_USER }}
+          from: GitHub Actions <noreply@github.com>
