@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "user": "admin",
+      "pass": "admin123",
+      "gmail": "admin@gmail.com"
+    }
+  ],
+  "system_config": {
+    "gate_open": true
+  }
+}
