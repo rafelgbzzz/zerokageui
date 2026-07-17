@@ -15,17 +15,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send OTP via Gmail
-        uses: dawidd6/action-send-mail@v3
+        uses: dawiddr6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.GMAIL_USER }}
-          password: ${{ secrets.GMAIL_PASS }}
+          
+          # 🚀 LANGSUNG DI-HARDCODE DI SINI
+          username: rafelseptahidayah@gmail.com
+          password: qudd alzl trtv fqwv # Ganti dengan 16 digit App Password Gmail kamu
+          
           subject: "🔐 Kode OTP Pendaftaran ZeroKageUI"
           to: ${{ github.event.inputs.target_email }}
-          from: ZeroKageUI Platform <${{ secrets.GMAIL_USER }}>
+          from: ZeroKageUI Platform <rafelseptahidayah@gmail.com>
           
-          # 🚀 FIX UTAMA: Menggunakan html_body agar otomatis render HTML
+          # 🚀 Menggunakan html_body agar otomatis render HTML
           html_body: |
             <!DOCTYPE html>
             <html>
