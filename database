@@ -11,7 +11,7 @@
       "user": "budi",
       "pass": "123",
       "role": "User",
-      "status": "offline",
+      "status": "online",
       "saldo": 5000
     }
   ],
