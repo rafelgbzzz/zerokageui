@@ -3,36 +3,12 @@
     {
       "user": "zero",
       "pass": "123",
-      "saldo": 0,
+      "saldo": 100000000000,
       "status": "online",
       "role": "user"
     }
   ],
   "transactions": [
-    {
-      "id": "dpl_3a9443fabyf",
-      "username": "zero",
-      "amount": 5000,
-      "status": "PAID",
-      "createdAt": "2026-07-17T20:47:48.213Z",
-      "processedAt": "2026-07-17T20:47:50.327Z"
-    },
-    {
-      "id": "dpl_9rja46xre8i",
-      "username": "zero",
-      "amount": 1000,
-      "status": "PAID",
-      "createdAt": "2026-07-17T20:49:06.591Z",
-      "processedAt": "2026-07-17T20:49:10.297Z"
-    },
-    {
-      "id": "dpl_f8ecoxosfle",
-      "username": "zero",
-      "amount": 1000,
-      "status": "PAID",
-      "createdAt": "2026-07-17T21:14:50.546Z",
-      "processedAt": "2026-07-17T21:15:00.977Z"
-    },
     {
       "id": "dpl_ht8aqyqfxvi",
       "username": "zero",
