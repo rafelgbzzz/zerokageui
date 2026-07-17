@@ -1,13 +1,26 @@
 {
   "users": [
     {
-      "user": "admin",
-      "pass": "admin123",
-      "gmail": "admin@gmail.com",
-      "status": "online"
+      "user": "zero",
+      "pass": "123",
+      "role": "Admin",
+      "status": "offline",
+      "saldo": 250000
+    },
+    {
+      "user": "budi",
+      "pass": "123",
+      "role": "User",
+      "status": "offline",
+      "saldo": 5000
     }
   ],
-  "system_config": {
-    "gate_open": true
-  }
+  "riwayat": [
+    {
+      "user": "Budi",
+      "nominal": 5000,
+      "type": "qris_sociabuzz",
+      "date": "17/07/2026, 22.10.15"
+    }
+  ]
 }
