@@ -4,7 +4,7 @@
       "user": "zero",
       "pass": "123",
       "saldo": 1000000000,
-      "status": "online",
+      "status": "offline",
       "role": "user"
     }
   ],
