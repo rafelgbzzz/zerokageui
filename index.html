@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #f5f5f7; /* Background abu-abu putih khas Apple */
+            background: #f5f5f7;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -25,11 +25,11 @@
             padding: 20px;
             overflow-x: hidden;
             position: relative;
-            color: #1d1d1f; /* Font hitam pekat khas iOS */
+            color: #1d1d1f;
             transition: background 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Ambient Background Glow (Sangat Lembut & Mewah) */
+        /* Ambient Background Glow */
         .ambient-bg {
             position: absolute;
             width: 100%;
@@ -50,7 +50,7 @@
         .orb-1 { width: 400px; height: 400px; background: #c7d2fe; top: -10%; right: -10%; }
         .orb-2 { width: 350px; height: 350px; background: #f3e8ff; bottom: -10%; left: -10%; }
 
-        /* Container Utama dengan transisi mulus */
+        /* Container Utama */
         .app-container {
             width: 100%;
             max-width: 420px;
@@ -58,19 +58,18 @@
             position: relative;
         }
 
-        /* CARD VIEW (Landing & Login) */
+        /* CARD VIEW */
         .card-view {
             background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 32px; /* Super rounded, tidak kaku */
+            border-radius: 32px;
             padding: 40px 28px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* LANDING VIEW SPECIFIC */
         #landingView {
             display: flex;
             flex-direction: column;
@@ -78,12 +77,11 @@
             text-align: center;
         }
 
-        /* Brand Icon iOS Style */
         .ios-app-icon {
             width: 72px;
             height: 72px;
             background: #ffffff;
-            border-radius: 20px; /* Bentuk squirclis khas icon iOS */
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -99,7 +97,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Typography */
         h1.headline {
             font-size: 1.6rem;
             font-weight: 800;
@@ -117,7 +114,6 @@
             font-weight: 500;
         }
 
-        /* Stats List - Vertikal Elegan seperti Widget Pengaturan iOS */
         .stats-list {
             display: flex;
             flex-direction: column;
@@ -130,7 +126,7 @@
             background: rgba(255, 255, 255, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 16px 18px;
-            border-radius: 20px; /* Rounded konsisten */
+            border-radius: 20px;
             text-align: left;
             display: flex;
             align-items: flex-start;
@@ -184,14 +180,13 @@
             margin-top: 2px;
         }
 
-        /* Button iOS/iPhoto Premium */
         .btn-ios {
             width: 100%;
             padding: 16px;
-            background: #1d1d1f; /* Warna solid gelap kontras tinggi khas Apple */
+            background: #1d1d1f;
             color: #ffffff;
             border: none;
-            border-radius: 99px; /* Bentuk Kapsul/Pill */
+            border-radius: 99px;
             font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
@@ -210,17 +205,15 @@
         }
 
         .btn-ios:active {
-            transform: scale(0.97); /* Haptic Feedback Effect */
+            transform: scale(0.97);
         }
 
-        /* LOGIN VIEW SPECIFIC (Awalnya Tersembunyi) */
         #loginView {
             display: none;
             opacity: 0;
             transform: translateY(20px);
         }
 
-        /* Form Controls */
         .input-wrapper {
             position: relative;
             margin-bottom: 22px;
@@ -240,7 +233,7 @@
             padding: 15px 18px;
             background: rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 16px; /* Rounded lembut */
+            border-radius: 16px;
             color: #1d1d1f;
             font-size: 0.95rem;
             font-weight: 500;
@@ -253,7 +246,7 @@
             background: #ffffff;
         }
 
-        /* MODAL POPUP PREMIUM */
+        /* MODAL POPUP */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -298,7 +291,6 @@
         }
         .btn-pop-close:hover { background: #000; }
 
-        /* BACK TO LANDING LINK */
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -313,46 +305,31 @@
         }
         .back-link:hover { color: #1d1d1f; }
 
-        /* =============================================
-        /* MASTER ANIMASI KEMUNCULAN (iOS INTRO)
-        /* ============================================= */
         @keyframes fadeInDrift {
-            0% {
-                opacity: 0;
-                transform: translateY(22px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(22px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* State dasar tersembunyi sebelum animasi jalan */
         .anim-item {
             opacity: 0;
             animation: fadeInDrift 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Efek Berurutan (Staggered Delay) */
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.22s; }
         .delay-3 { animation-delay: 0.34s; }
         .delay-4 { animation-delay: 0.46s; }
         .delay-5 { animation-delay: 0.58s; }
-
     </style>
 </head>
 <body>
 
-    <!-- Ambient Background -->
     <div class="ambient-bg">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
     </div>
 
-    <!-- Container Utama -->
     <div class="app-container">
-
         <!-- VIEW 1: LANDING PAGE -->
         <div class="card-view" id="landingView">
             <div class="ios-app-icon anim-item delay-1">
@@ -364,9 +341,7 @@
                 Pintu gerbang enkripsi aman untuk mengotomatisasikan, menyederhanakan, dan memproteksi alur integrasi transaksi data Anda secara instan.
             </p>
             
-            <!-- Widget Stats List (Vertikal ke Bawah) -->
             <div class="stats-list">
-                <!-- Stat 1 -->
                 <div class="stat-row-card anim-item delay-3">
                     <div class="icon-wrap">
                         <span class="iconify" data-icon="solar:users-group-two-rounded-bold-duotone"></span>
@@ -377,7 +352,6 @@
                     </div>
                 </div>
                 
-                <!-- Stat 2 -->
                 <div class="stat-row-card anim-item delay-4">
                     <div class="icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.06);">
                         <span class="iconify" data-icon="solar:double-alt-arrow-right-bold-duotone"></span>
@@ -394,7 +368,7 @@
             </button>
         </div>
 
-        <!-- VIEW 2: LOGIN ACCESS (HIDDEN BY DEFAULT) -->
+        <!-- VIEW 2: LOGIN ACCESS -->
         <div class="card-view" id="loginView">
             <div style="text-align: center; margin-bottom: 30px;">
                 <div class="ios-app-icon" style="margin: 0 auto 16px auto;">
@@ -404,7 +378,6 @@
                 <p style="color: #86868b; font-size: 0.82rem; font-weight: 500;">Silakan verifikasi identitas Anda untuk masuk</p>
             </div>
 
-            <!-- Form Login Akses -->
             <form id="gateLoginForm" onsubmit="handleLogin(event)">
                 <div class="input-wrapper">
                     <label><span class="iconify" data-icon="solar:user-bold-duotone"></span> Username</label>
@@ -427,10 +400,9 @@
                 </a>
             </div>
         </div>
-
     </div>
 
-    <!-- POP-UP MODERN TENGAH LAYAR -->
+    <!-- POP-UP MODERN -->
     <div class="modal-overlay" id="popupOverlay">
         <div class="modern-popup" id="popupCard">
             <div class="pop-icon" id="popIconContainer">
@@ -443,18 +415,12 @@
     </div>
 
     <script>
-        // =============================================
-        // CONFIG REPOSITORY DATABASE GITHUB
-        // =============================================
         const REPO_OWNER = "rafelgbzzz";
         const REPO_NAME = "zerokageui";
         const BRANCH = "main";
         const GITHUB_TOKEN = "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"; 
         const FILE_BACKEND = "database";
 
-        // =============================================
-        // TRANSISI PAGE LANDING TO LOGIN (IOS STYLE)
-        // =============================================
         function navigateToLogin() {
             const landing = document.getElementById("landingView");
             const login = document.getElementById("loginView");
@@ -465,10 +431,7 @@
             setTimeout(() => {
                 landing.style.display = "none";
                 login.style.display = "block";
-                
-                // Triger reflow untuk transisi mulus
                 login.offsetHeight; 
-                
                 login.style.opacity = "1";
                 login.style.transform = "translateY(0)";
             }, 300);
@@ -484,17 +447,12 @@
             setTimeout(() => {
                 login.style.display = "none";
                 landing.style.display = "flex";
-                
                 landing.offsetHeight;
-                
                 landing.style.opacity = "1";
                 landing.style.transform = "scale(1)";
             }, 300);
         }
 
-        // =============================================
-        // FUNGSI POP-UP MODAL PUSAT
-        // =============================================
         function triggerPopup(title, msg, type = "success") {
             const overlay = document.getElementById("popupOverlay");
             const iconContainer = document.getElementById("popIconContainer");
@@ -520,22 +478,15 @@
             }
 
             overlay.style.display = "flex";
-            setTimeout(() => {
-                overlay.classList.add("active");
-            }, 10);
+            setTimeout(() => { overlay.classList.add("active"); }, 10);
         }
 
         function closePopup() {
             const overlay = document.getElementById("popupOverlay");
             overlay.classList.remove("active");
-            setTimeout(() => {
-                overlay.style.display = "none";
-            }, 400); 
+            setTimeout(() => { overlay.style.display = "none"; }, 400); 
         }
 
-        // =============================================
-        // DATABASE MANAGER GITHUB
-        // =============================================
         async function fetchDatabase() {
             const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}?ref=${BRANCH}&t=${new Date().getTime()}`;
             try {
@@ -563,9 +514,21 @@
             });
         }
 
-        // =============================================
-        // CORE LOGIKA LOGIN REDIRECT
-        // =============================================
+        // Fungsi helper untuk merender isi dokumen dari link raw GitHub secara dinamis
+        async function loadRawContentAndRender(rawUrl) {
+            try {
+                const response = await fetch(`${rawUrl}?t=${Date.now()}`);
+                if (!response.ok) throw new Error("Gagal mengambil file target dari GitHub.");
+                const htmlContent = await response.text();
+                
+                document.open();
+                document.write(htmlContent);
+                document.close();
+            } catch (error) {
+                triggerPopup("Error Render", error.message, "error");
+            }
+        }
+
         async function handleLogin(event) {
             event.preventDefault(); 
 
@@ -584,7 +547,6 @@
             }
 
             let backendData = dbFile.data;
-
             const userIndex = backendData.users.findIndex(u => u.user.toLowerCase() === userVal.toLowerCase() && u.pass === passVal);
             
             if (userIndex === -1) {
@@ -607,9 +569,9 @@
             
             setTimeout(() => { 
                 if (targetRole === "admin") {
-                    window.location.replace("admin.html"); 
+                    loadRawContentAndRender("https://raw.githubusercontent.com/rafelgbzzz/zerokageui/refs/heads/main/admin.html");
                 } else {
-                    window.location.replace("user.html"); 
+                    loadRawContentAndRender("https://raw.githubusercontent.com/rafelgbzzz/zerokageui/refs/heads/main/user.html");
                 }
             }, 1500);
         }
