@@ -3,7 +3,7 @@
     {
       "user": "zero",
       "pass": "123",
-      "saldo": 1000000000,
+      "saldo": 1000100000,
       "status": "offline",
       "role": "user"
     },
@@ -15,5 +15,13 @@
       "role": "admin"
     }
   ],
-  "riwayat": []
+  "riwayat": [
+    {
+      "id": "TX-1718821550123",
+      "user": "zero",
+      "nominal": 100000,
+      "date": "24/06/2026, 21:55:00",
+      "status": "SUKSES"
+    }
+  ]
 }
