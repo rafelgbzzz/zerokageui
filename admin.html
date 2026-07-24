@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeroKageUI - Admin Panel Validasi</title>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            background: #0f172a; 
+            background-image: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+            color: #f8fafc; 
+            min-height: 100vh; 
+            padding: 30px 20px; 
+        }
+        .container { max-width: 550px; margin: 0 auto; }
+        
+        .header-box {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        h1 { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; color: #fff; }
+        p { font-size: 0.82rem; color: #94a3b8; line-height: 1.4; }
+
+        .card { 
+            background: rgba(30, 41, 59, 0.6); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 20px; 
+            padding: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+            margin-bottom: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+        .card:hover { border-color: rgba(79, 70, 229, 0.3); }
+        
+        .tx-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .tx-id { font-size: 0.75rem; font-weight: 700; color: #818cf8; background: rgba(129, 140, 248, 0.1); padding: 5px 12px; border-radius: 99px; letter-spacing: 0.5px; }
+        .tx-date { font-size: 0.75rem; color: #64748b; }
+        
+        .tx-details { font-size: 0.88rem; margin-bottom: 16px; line-height: 1.6; color: #cbd5e1; }
+        .tx-details strong { color: #fff; }
+        
+        .btn-group { display: flex; gap: 10px; }
+        .btn { 
+            flex: 1; 
+            padding: 12px; 
+            border: none; 
+            border-radius: 14px; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-success { background: #10b981; color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .btn-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn:hover { opacity: 0.85; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 50px 20px;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 20px;
+            border: 1px dashed rgba(255,255,255,0.08);
+        }
+        .spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-box">
+            <h1><span class="iconify" data-icon="solar:shield-keyhole-bold-duotone" style="color:#818cf8; font-size: 1.5rem;"></span> Admin Validasi Top-Up</h1>
+            <p>Kelola dan verifikasi transaksi top-up saldo user secara real-time dari sistem gateway.</p>
+        </div>
+
+        <div id="adminTxContainer">
+            <div class="empty-state">
+                <span class="iconify spin" data-icon="solar:restart-bold-duotone" style="font-size: 2rem; margin-bottom: 8px;"></span>
+                <p>Memuat data transaksi...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const REPO_OWNER = "rafelgbzzz";
+        const REPO_NAME = "zerokageui";
+        const BRANCH = "main";
+        const GITHUB_TOKEN = "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";
+        const FILE_BACKEND = "database";
+        const FILE_TRANSAKSI = "transaksi";
+
+        async function loadAdminTransactions() {
+            const container = document.getElementById("adminTxContainer");
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_TRANSAKSI}?ref=${BRANCH}&t=${Date.now()}`, {
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                });
+                if (!res.ok) { 
+                    container.innerHTML = `<div class="empty-state">Belum ada data transaksi atau file tidak ditemukan.</div>`; 
+                    return; 
+                }
+                
+                const fileData = await res.json();
+                const transaksiList = JSON.parse(atob(fileData.content));
+                
+                // Hanya ambil yang benar-benar berstatus PENDING
+                const pendingList = transaksiList.filter(t => t.status === "PENDING");
+
+                if (pendingList.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <span class="iconify" data-icon="solar:check-circle-bold-duotone" style="font-size: 2.5rem; color: #10b981; margin-bottom: 8px;"></span>
+                            <p style="color: #cbd5e1; font-weight: 600;">Tidak ada transaksi pending saat ini.</p>
+                            <p style="font-size: 0.75rem; margin-top: 4px;">Semua top-up sudah beres!</p>
+                        </div>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                pendingList.forEach(tx => {
+                    const cleanId = tx.id.replace(/[^a-zA-Z0-9]/g, '_');
+                    container.innerHTML += `
+                        <div class="card" id="card-${cleanId}">
+                            <div class="tx-header">
+                                <span class="tx-id">${tx.id}</span>
+                                <span class="tx-date">${tx.date || tx.createdAt}</span>
+                            </div>
+                            <div class="tx-details">
+                                <strong>User:</strong> @${tx.user || tx.username}<br>
+                                <strong>Nominal:</strong> Rp${(tx.nominal || tx.amount).toLocaleString('id-ID')}
+                            </div>
+                            <div class="btn-group" id="actions-${cleanId}">
+                                <button class="btn btn-danger" onclick="prosesValidasi('${tx.id}', 'DITOLAK')">
+                                    <span class="iconify" data-icon="solar:close-circle-bold"></span> Tolak
+                                </button>
+                                <button class="btn btn-success" onclick="prosesValidasi('${tx.id}', 'TERIMA')">
+                                    <span class="iconify" data-icon="solar:check-circle-bold"></span> Terima
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                container.innerHTML = `<div class="empty-state" style="color:#ef4444;">Gagal memuat data dari GitHub.</div>`;
+                console.error(err);
+            }
+        }
+
+        async function prosesValidasi(txId, aksi) {
+            if(!confirm(`Yakin ingin memproses transaksi ${txId} sebagai ${aksi}?`)) return;
+
+            const cleanId = txId.replace(/[^a-zA-Z0-9]/g, '_');
+            const actionContainer = document.getElementById(`actions-${cleanId}`);
+            
+            // Kunci tombol langsung secara lokal agar tidak bisa di-klik dobel
+            if (actionContainer) {
+                actionContainer.innerHTML = `<button class="btn btn-success" style="width: 100%;" disabled><span class="iconify spin" data-icon="solar:restart-bold-duotone"></span> Memproses...</button>`;
+            }
+
+            try {
+                // 1. Ambil file transaksi terbaru untuk menghindari race condition
+                const resTx = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_TRANSAKSI}?ref=${BRANCH}&t=${Date.now()}`, {
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                });
+                const txFile = await resTx.json();
+                let transaksiData = JSON.parse(atob(txFile.content));
+
+                const txIndex = transaksiData.findIndex(t => t.id === txId);
+                if (txIndex === -1) { alert("Transaksi tidak ditemukan!"); loadAdminTransactions(); return; }
+                
+                const targetTx = transaksiData[txIndex];
+
+                // Proteksi ekstra: Jika status sudah bukan PENDING di server, batalkan
+                if (targetTx.status !== "PENDING") {
+                    alert(`Transaksi ini sudah diproses sebelumnya dengan status: ${targetTx.status}`);
+                    loadAdminTransactions();
+                    return;
+                }
+
+                const username = targetTx.user || targetTx.username;
+                const nominal = targetTx.nominal || targetTx.amount;
+
+                if (aksi === "TERIMA") {
+                    targetTx.status = "SUKSES";
+
+                    // 2. Ambil file database utama untuk menambahkan saldo & riwayat user
+                    const resDb = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}?ref=${BRANCH}`, {
+                        headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                    });
+                    const dbFile = await resDb.json();
+                    let dbContent = JSON.parse(atob(dbFile.content));
+
+                    const userIndex = dbContent.users.findIndex(u => u.user.toLowerCase() === username.toLowerCase());
+                    if (userIndex !== -1) {
+                        dbContent.users[userIndex].saldo = (dbContent.users[userIndex].saldo || 0) + nominal;
+                        if (!dbContent.riwayat) dbContent.riwayat = [];
+                        dbContent.riwayat.push({
+                            id: targetTx.id,
+                            user: username,
+                            nominal: nominal,
+                            date: targetTx.date || targetTx.createdAt,
+                            status: "SUKSES"
+                        });
+
+                        // Update database utama di GitHub
+                        await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}`, {
+                            method: "PUT",
+                            headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                message: `Admin approved top-up ${targetTx.id} for @${username}`,
+                                content: btoa(unescape(encodeURIComponent(JSON.stringify(dbContent, null, 2)))),
+                                sha: dbFile.sha,
+                                branch: BRANCH
+                            })
+                        });
+                    }
+                } else {
+                    targetTx.status = "DITOLAK";
+                }
+
+                // 3. Update status di file transaksi terpisah
+                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_TRANSAKSI}`, {
+                    method: "PUT",
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: `Transaction ${txId} marked as ${targetTx.status}`,
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(transaksiData, null, 2)))),
+                        sha: txFile.sha,
+                        branch: BRANCH
+                    })
+                });
+
+                // Hapus card dari tampilan secara smooth atau reload ulang daftar pending
+                const cardEl = document.getElementById(`card-${cleanId}`);
+                if (cardEl) {
+                    cardEl.style.opacity = "0";
+                    cardEl.style.transform = "scale(0.95)";
+                    setTimeout(() => loadAdminTransactions(), 300);
+                } else {
+                    loadAdminTransactions();
+                }
+
+            } catch (err) {
+                alert("Terjadi kesalahan sistem saat memproses validasi.");
+                console.error(err);
+                loadAdminTransactions();
+            }
+        }
+
+        loadAdminTransactions();
+    </script>
+</body>
+</html>
