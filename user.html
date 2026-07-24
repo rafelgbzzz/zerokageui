@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZeroKageUI - User Gateway</title>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset Style iOS Premium */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f5f5f7;
+            color: #1d1d1f;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background */
+        .ambient-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.45;
+        }
+        .orb-1 { width: 350px; height: 350px; background: #c7d2fe; top: -5%; left: -10%; }
+        .orb-2 { width: 350px; height: 350px; background: #f3e8ff; bottom: 15%; right: -10%; }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        /* Header Profil Singkat atas */
+        .header-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar-box {
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.04);
+            color: #4f46e5;
+            font-size: 1.3rem;
+        }
+        .greeting-text h2 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+        .greeting-text p {
+            font-size: 0.78rem;
+            color: #86868b;
+            font-weight: 500;
+        }
+
+        /* MASTER TAB CONTENT WRAPPER */
+        .tab-content {
+            display: none;
+            animation: tabSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Saldo Premium Wallet Card */
+        .wallet-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 28px;
+            padding: 28px 24px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.03), inset 0 1px 0 #ffffff;
+            margin-bottom: 24px;
+        }
+        .wallet-lbl {
+            font-size: 0.82rem;
+            color: #86868b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .wallet-balance {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #1d1d1f;
+            margin-bottom: 24px;
+        }
+        
+        /* Premium Capsule Buttons */
+        .btn-action-group {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-ios-pill {
+            flex: 1;
+            padding: 14px;
+            background: #1d1d1f;
+            color: #ffffff;
+            border: none;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-ios-pill:hover { background: #000; transform: translateY(-1px); }
+        .btn-ios-pill:active { transform: scale(0.97); }
+
+        .btn-secondary-pill {
+            background: rgba(0, 0, 0, 0.04);
+            color: #1d1d1f;
+            box-shadow: none;
+        }
+        .btn-secondary-pill:hover { background: rgba(0, 0, 0, 0.08); }
+
+        /* Generic Section Heading */
+        .section-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 14px;
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Card Menu Item List */
+        .ios-list-group {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+            margin-bottom: 24px;
+        }
+        .ios-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+            transition: background 0.2s;
+        }
+        .ios-list-item:last-child { border-bottom: none; }
+        .item-info-side {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .item-icon-circle {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(79, 70, 229, 0.08);
+            color: #4f46e5;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .item-titles h4 { font-size: 0.9rem; font-weight: 600; color: #1d1d1f; }
+        .item-titles p { font-size: 0.75rem; color: #86868b; font-weight: 500; }
+        .item-badge {
+            font-size: 0.75rem; font-weight: 700;
+            padding: 4px 10px; border-radius: 99px;
+            background: rgba(16, 185, 129, 0.1); color: #10b981;
+        }
+
+        /* FLOATING NAVIGATION TAB BAR */
+        .floating-nav-bar {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 8px 12px;
+            border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+        }
+        .nav-tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            color: #86868b;
+            font-family: inherit;
+            position: relative;
+            transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-tab-btn span.tab-icon {
+            font-size: 1.4rem;
+            transition: transform 0.3s ease;
+        }
+        .nav-tab-btn span.tab-lbl {
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .nav-tab-btn.active { color: #0071e3; }
+        .nav-tab-btn.active span.tab-icon { transform: scale(1.1); }
+        
+                /* Indikator Titik Aktif di Navigasi Bawah */
+        .nav-tab-btn .active-dot {
+            width: 4px;
+            height: 4px;
+            background-color: transparent;
+            border-radius: 50%;
+            margin-top: 2px;
+            transition: background-color 0.3s ease;
+        }
+        .nav-tab-btn.active .active-dot {
+            background-color: #0071e3;
+        }
+
+        /* POPUP MODAL & QRIS FLOW SHEET */
+        .modal-mask {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            align-items: center; justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+        .modal-mask.active { display: flex; opacity: 1; }
+
+        .ios-sheet-card {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            width: 100%;
+            max-width: 360px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px 24px;
+            box-shadow: 0 25px 55px rgba(0,0,0,0.12);
+            transform: scale(0.92) translateY(15px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: center;
+        }
+        .modal-mask.active .ios-sheet-card { transform: scale(1) translateY(0); }
+
+        .topup-input-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 18px;
+            padding: 12px 16px;
+            margin: 18px 0;
+            display: flex;
+            align-items: center;
+        }
+        .currency-prefix { font-size: 1.1rem; font-weight: 700; color: #1d1d1f; margin-right: 6px; }
+        .amt-field {
+            width: 100%; background: none; border: none; outline: none;
+            font-size: 1.25rem; font-weight: 800; color: #1d1d1f;
+            font-family: inherit;
+        }
+
+        .qris-frame {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 16px;
+            width: 190px; height: 190px;
+            margin: 16px auto;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .qris-frame img { width: 100%; height: 100%; object-fit: contain; }
+
+        .invoice-box {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin: 16px 0;
+            text-align: left;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .invoice-row { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 500; color: #515154; }
+        .invoice-row.total { font-weight: 700; color: #1d1d1f; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 8px; font-size: 0.9rem; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes tabSlideIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        
+        <div class="header-profile">
+            <div class="user-meta">
+                <div class="avatar-box">
+                    <span class="iconify" data-icon="solar:user-rounded-bold-duotone"></span>
+                </div>
+                <div class="greeting-text">
+                    <h2 id="displayUser">@Guest</h2>
+                    <p id="displayRole">Akses Sistem Premium</p>
+                </div>
+            </div>
+            <div class="avatar-box" style="cursor: pointer; color: #dc2626;" onclick="handleLogout()">
+                <span class="iconify" data-icon="solar:logout-3-bold-duotone"></span>
+            </div>
+        </div>
+
+        <!-- VIEW TAB 1: HOME PAGE -->
+<div id="tabHome" class="tab-content active">
+    <div class="wallet-card">
+        <span class="wallet-lbl">
+            <span class="iconify" data-icon="solar:wallet-money-bold-duotone"></span> Saldo Gateway
+        </span>
+        <h1 class="wallet-balance" id="homeSaldo">Rp0</h1>
+        <div class="btn-action-group">
+            <button class="btn-ios-pill" onclick="openTopUpSheet()">
+                <span class="iconify" data-icon="solar:add-circle-bold"></span> Top Up Saldo
+            </button>
+            <button class="btn-ios-pill btn-secondary-pill" onclick="switchTab('transaksi')">
+                Riwayat
+            </button>
+        </div>
+    </div>
+
+    <!-- 3 Tombol Filter Status Transaksi (Sejajar ke Samping) -->
+    <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button onclick="filterStatusHome('PENDING')" class="status-chip-btn" style="flex: 1; background: rgba(234, 179, 8, 0.12); border: 1px solid rgba(234, 179, 8, 0.3); color: #eab308; padding: 12px 10px; border-radius: 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+            <span class="iconify" data-icon="solar:clock-circle-bold-duotone" style="font-size: 1rem;"></span> Proses
+        </button>
+        <button onclick="filterStatusHome('SUKSES')" class="status-chip-btn" style="flex: 1; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 12px 10px; border-radius: 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+            <span class="iconify" data-icon="solar:check-circle-bold-duotone" style="font-size: 1rem;"></span> Berhasil
+        </button>
+        <button onclick="filterStatusHome('DITOLAK')" class="status-chip-btn" style="flex: 1; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 10px; border-radius: 14px; font-weight: 700; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+            <span class="iconify" data-icon="solar:close-circle-bold-duotone" style="font-size: 1rem;"></span> Gagal
+        </button>
+    </div>
+
+    <!-- Wadah untuk menampilkan list transaksi sesuai status yang diklik -->
+    <div id="homeTransactionFilterView" style="margin-top: 16px;">
+        <!-- Konten daftar transaksi akan muncul di sini saat tombol diklik -->
+    </div>
+</div>
+
+        <!-- VIEW TAB 2: TRANSAKSI PAGE -->
+        <div id="tabTransaksi" class="tab-content">
+            <h3 class="section-title">Riwayat Verifikasi</h3>
+            <div class="ios-list-group" id="historyContainer">
+                <div style="padding: 30px; text-align: center; color: #86868b; font-size: 0.85rem; font-weight: 500;">
+                    <span class="iconify" data-icon="solar:document-text-broken" style="font-size: 2rem; margin-bottom: 8px;"></span>
+                    <p>Belum ada riwayat pertukaran data</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW TAB 3: PROFILE PAGE -->
+        <div id="tabProfile" class="tab-content">
+            <h3 class="section-title">Informasi Lisensi</h3>
+            <div class="ios-list-group">
+                <div class="ios-list-item">
+                    <div class="item-titles">
+                        <h4 style="color:#86868b; font-size:0.75rem; text-transform:uppercase;">Identitas Anggota</h4>
+                        <p id="profUsername" style="font-size:1rem; font-weight:700; color:#1d1d1f; margin-top:4px;">-</p>
+                    </div>
+                </div>
+                <div class="ios-list-item">
+                    <div class="item-titles">
+                        <h4 style="color:#86868b; font-size:0.75rem; text-transform:uppercase;">Hak Otoritas</h4>
+                        <p id="profRole" style="font-size:1rem; font-weight:700; color:#4f46e5; margin-top:4px;">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+        <!-- FLOATING BOTTOM NAVIGATION -->
+    <div class="floating-nav-bar">
+        <button class="nav-tab-btn active" id="tabBtnHome" onclick="switchTab('home')">
+            <span class="tab-icon iconify" data-icon="solar:home-smile-angle-bold-duotone"></span>
+            <span class="tab-lbl">Home</span>
+            <div class="active-dot"></div>
+        </button>
+        <button class="nav-tab-btn" id="tabBtnTransaksi" onclick="switchTab('transaksi')">
+            <span class="tab-icon iconify" data-icon="solar:document-add-bold-duotone"></span>
+            <span class="tab-lbl">Transaksi</span>
+            <div class="active-dot"></div>
+        </button>
+        <button class="nav-tab-btn" id="tabBtnProfile" onclick="switchTab('profile')">
+            <span class="tab-icon iconify" data-icon="solar:user-id-bold-duotone"></span>
+            <span class="tab-lbl">Profile</span>
+            <div class="active-dot"></div>
+        </button>
+    </div>
+
+    <!-- SHEET 1: FORM INPUT NOMINAL -->
+    <div class="modal-mask" id="sheetTopUpForm">
+        <div class="ios-sheet-card">
+            <h3 style="font-weight:800; font-size:1.2rem;">Isi Ulang Saldo</h3>
+            <p style="font-size:0.8rem; color:#86868b; margin-top:4px;">Metode Pembayaran: QRIS</p>
+            
+            <div class="topup-input-box">
+                <span class="currency-prefix">Rp</span>
+                <input type="number" id="inputAmount" class="amt-field" placeholder="0" min="1000">
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button class="btn-ios-pill btn-secondary-pill" style="padding:12px;" onclick="closeSheet('sheetTopUpForm')">Batal</button>
+                <button class="btn-ios-pill" style="padding:12px;" onclick="validateTopUpInput()">Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHEET 2: KONFIRMASI PEMBAYARAN -->
+    <div class="modal-mask" id="sheetConfirm">
+        <div class="ios-sheet-card">
+            <div style="color:#4f46e5; font-size:2.2rem; margin-bottom:10px;"><span class="iconify" data-icon="solar:question-square-bold-duotone"></span></div>
+            <h3 style="font-weight:800; font-size:1.2rem;">Konfirmasi Order?</h3>
+            <p style="font-size:0.82rem; color:#515154; margin-top:6px;">Apakah Anda ingin memproses pembuatan tagihan QRIS ini?</p>
+
+            <div class="invoice-box">
+                <div class="invoice-row"><span>Nominal Top Up:</span><span id="confAmt">Rp0</span></div>
+                <div class="invoice-row total"><span>Total Pembayaran:</span><span id="confTotal">Rp0</span></div>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button class="btn-ios-pill btn-secondary-pill" style="padding:12px;" onclick="closeSheet('sheetConfirm')">Kembali</button>
+                <button class="btn-ios-pill" style="padding:12px; background:#10b981;" onclick="generateQrisPayload()">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SHEET 3: QRIS & UPLOAD BUKTI TRANSFER TELEGRAM -->
+    <div class="modal-mask" id="sheetQrisDisplay">
+        <div class="ios-sheet-card">
+            <h3 style="font-weight:800; font-size:1.15rem; color:#1d1d1f;">Pindai QRIS</h3>
+            <p style="font-size:0.78rem; color:#86868b; margin-top:2px;">Selesaikan pembayaran, lalu upload bukti transfer</p>
+
+            <div class="qris-frame">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=ZeroKageUI_Gateway_SampleQR" alt="QRIS Code">
+            </div>
+
+            <div class="invoice-box" style="margin-top:10px;">
+                <div class="invoice-row"><span>Jumlah Top Up:</span><span id="qrAmt">Rp0</span></div>
+                <div class="invoice-row total"><span>Total Tagihan:</span><span id="qrTotal">Rp0</span></div>
+            </div>
+
+            <!-- FORM KIRIM BUKTI KE TELEGRAM & SIMPAN GITHUB -->
+            <form id="telegramForm" onsubmit="handleKirimTelegram(event)" enctype="multipart/form-data" style="margin-top: 15px;">
+                <input type="hidden" name="caption" id="telegramCaption" value="">
+
+                <div style="text-align: left; margin-bottom: 12px;">
+                    <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 4px; color:#1d1d1f;">Upload Screenshot Bukti Transfer:</label>
+                    <input type="file" id="proofImage" name="photo" accept="image/*" required style="width: 100%; font-size: 0.78rem; padding: 6px; background: rgba(0,0,0,0.03); border-radius: 10px; border: 1px dashed rgba(0,0,0,0.15);">
+                </div>
+
+                <button type="submit" id="btnSubmitTelegram" class="btn-ios-pill" style="width:100%; margin-bottom:8px; background:#10b981; border:none; cursor:pointer;">
+                    <span class="iconify" data-icon="solar:upload-bold"></span> Kirim ke Telegram Owner
+                </button>
+            </form>
+
+            <button class="btn-ios-pill btn-secondary-pill" style="width:100%; padding:10px; font-size:0.82rem;" onclick="closeSheet('sheetQrisDisplay')">
+                Tutup Batalkan
+            </button>
+        </div>
+    </div>
+
+    <!-- SYSTEM ALERTS BANNER -->
+    <div class="modal-mask" id="globalAlertSheet">
+        <div class="ios-sheet-card" style="max-width:320px;">
+            <div id="alertIcon" style="font-size:2rem; margin-bottom:10px;"></div>
+            <h3 id="alertTitle" style="font-weight:800; font-size:1.15rem;"></h3>
+            <p id="alertMsg" style="font-size:0.85rem; color:#86868b; margin-top:6px; line-height:1.4;"></p>
+            <button class="btn-ios-pill" style="margin-top:18px; padding:10px;" id="btnAlertClose" onclick="closeSheet('globalAlertSheet')">Selesai</button>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // CONFIG REPOSITORY DATABASE & TELEGRAM BOT
+        // =============================================
+        const REPO_OWNER = "rafelgbzzz";
+        const REPO_NAME = "zerokageui";
+        const BRANCH = "main";
+        const GITHUB_TOKEN = "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"; 
+        const FILE_BACKEND = "database";
+        const FILE_TRANSAKSI = "transaksi"; // File penampung riwayat transaksi pending/sukses/ditolak
+
+        // Konfigurasi Bot Telegram Owner
+        const TELEGRAM_BOT_TOKEN = "8993379566:AAGWd5H7Ps8NhIx1Fp5KRCDS1XkbVNuBKyg";
+        const TELEGRAM_OWNER_ID = "8241526835";
+
+        let currentUser = localStorage.getItem("session_user") || "Guest";
+        let currentRole = localStorage.getItem("session_role") || "User";
+        let globalSha = "";
+        let globalDatabase = null;
+        let currentActiveNominal = 0;
+
+        if(currentUser === "Guest"){
+            window.location.replace("index.html");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("displayUser").innerText = "@" + currentUser;
+            document.getElementById("displayRole").innerText = "Akses " + currentRole;
+            document.getElementById("profUsername").innerText = "@" + currentUser;
+            document.getElementById("profRole").innerText = currentRole;
+            syncWalletSystem();
+        });
+
+        async function fetchDatabase() {
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}?ref=${BRANCH}&t=${new Date().getTime()}`;
+            try {
+                const res = await fetch(url, { headers: { "Authorization": `token ${GITHUB_TOKEN}` } });
+                if (!res.ok) return null;
+                const data = await res.json();
+                globalSha = data.sha;
+                globalDatabase = JSON.parse(atob(data.content));
+                return globalDatabase;
+            } catch (e) { return null; }
+        }
+
+        async function saveDatabase(fullData, sha, msg) {
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}`;
+            const body = {
+                message: msg,
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(fullData, null, 2)))),
+                sha: sha,
+                branch: BRANCH
+            };
+            await fetch(url, {
+                method: "PUT",
+                headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+        }
+
+                async function syncWalletSystem() {
+            const db = await fetchDatabase();
+            if(db) {
+                const account = db.users.find(u => u.user.toLowerCase() === currentUser.toLowerCase());
+                if(account) {
+                    const formatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(account.saldo || 0);
+                    document.getElementById("homeSaldo").innerText = formatted;
+                }
+            }
+
+            // Ambil juga data riwayat secara real-time dari file terpisah 'transaksi' di GitHub
+            try {
+                const resTx = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_TRANSAKSI}?ref=${BRANCH}&t=${new Date().getTime()}`, {
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}` }
+                });
+                if (resTx.ok) {
+                    const fileData = await resTx.json();
+                    const transaksiList = JSON.parse(atob(fileData.content));
+                    renderRiwayatData(transaksiList, currentUser);
+                }
+            } catch (err) {
+                console.error("Gagal memuat riwayat transaksi:", err);
+            }
+        }
+
+        function renderRiwayatData(riwayatList, username) {
+            const container = document.getElementById("historyContainer");
+            const userFilter = riwayatList.filter(r => (r.user || r.username).toLowerCase() === username.toLowerCase());
+            
+            if(userFilter.length === 0) {
+                container.innerHTML = `
+                    <div style="padding: 30px; text-align: center; color: #86868b; font-size: 0.85rem; font-weight: 500;">
+                        <span class="iconify" data-icon="solar:document-text-broken" style="font-size: 2rem; margin-bottom: 8px;"></span>
+                        <p>Belum ada riwayat pertukaran data</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = "";
+            userFilter.reverse().forEach(item => {
+                const nominalVal = item.nominal || item.amount || 0;
+                const formatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(nominalVal);
+                
+                let badgeColor = "#10b981";
+                let badgeText = "Sukses";
+                
+                if(item.status === "PENDING") { 
+                    badgeColor = "#f59e0b"; 
+                    badgeText = "Pending / Proses"; 
+                } else if(item.status === "DITOLAK") { 
+                    badgeColor = "#dc2626"; 
+                    badgeText = "Ditolak / Gagal"; 
+                }
+
+                container.innerHTML += `
+                    <div class="ios-list-item">
+                        <div class="item-info-side">
+                            <div class="item-icon-circle" style="color:${badgeColor}; background:${badgeColor}15;">
+                                <span class="iconify" data-icon="solar:document-text-bold"></span>
+                            </div>
+                            <div class="item-titles">
+                                <h4>Top Up (${item.id || 'TX'})</h4>
+                                <p>${item.date || item.createdAt || 'Baru saja'}</p>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-weight:800; color:${badgeColor}; font-size:0.95rem; display:block;">Rp${nominalVal.toLocaleString('id-ID')}</span>
+                            <span style="font-size:0.68rem; font-weight:700; background:${badgeColor}20; color:${badgeColor}; padding:2px 8px; border-radius:99px;">${badgeText}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+                function switchTab(target) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+            if (target === 'home') {
+                document.getElementById('tabHome').classList.add('active');
+                document.getElementById('tabBtnHome').classList.add('active');
+            } else if (target === 'transaksi') {
+                document.getElementById('tabTransaksi').classList.add('active');
+                document.getElementById('tabBtnTransaksi').classList.add('active');
+                syncWalletSystem();
+            } else if (target === 'profile') {
+                document.getElementById('tabProfile').classList.add('active');
+                document.getElementById('tabBtnProfile').classList.add('active');
+            }
+        }
+
+        function openSheet(id) {
+            const mask = document.getElementById(id);
+            mask.style.display = "flex";
+            setTimeout(() => mask.classList.add("active"), 10);
+        }
+
+        function closeSheet(id) {
+            const mask = document.getElementById(id);
+            mask.classList.remove("active");
+            setTimeout(() => mask.style.display = "none", 300);
+        }
+
+        function openTopUpSheet() {
+            document.getElementById("inputAmount").value = "";
+            openSheet("sheetTopUpForm");
+        }
+
+        function showAlertNotification(title, message, isSuccess = true) {
+            const iconWrap = document.getElementById("alertIcon");
+            if(isSuccess) {
+                iconWrap.style.color = "#10b981";
+                iconWrap.innerHTML = `<span class="iconify" data-icon="solar:check-circle-bold-duotone"></span>`;
+            } else {
+                iconWrap.style.color = "#dc2626";
+                iconWrap.innerHTML = `<span class="iconify" data-icon="solar:danger-bold-duotone"></span>`;
+            }
+            document.getElementById("alertTitle").innerText = title;
+            document.getElementById("alertMsg").innerText = message;
+            document.getElementById("btnAlertClose").setAttribute("onclick", "closeSheet('globalAlertSheet')");
+            openSheet("globalAlertSheet");
+        }
+
+        function validateTopUpInput() {
+            const val = parseInt(document.getElementById("inputAmount").value);
+            if(isNaN(val) || val < 1000) {
+                showAlertNotification("Input Tidak Valid", "Minimal nominal pengisian adalah Rp1.000", false);
+                return;
+            }
+            currentActiveNominal = val;
+            closeSheet("sheetTopUpForm");
+
+            document.getElementById("confAmt").innerText = "Rp" + val.toLocaleString('id-ID');
+
+            setTimeout(() => { openSheet("sheetConfirm"); }, 350);
+        }
+
+        async function generateQrisPayload() {
+            closeSheet("sheetConfirm");
+            const iconWrap = document.getElementById("alertIcon");
+            iconWrap.style.color = "#4f46e5";
+            iconWrap.innerHTML = `<span class="iconify" data-icon="solar:restart-bold-duotone" class="spin"></span>`;
+            document.getElementById("alertTitle").innerText = "Membuat Tagihan";
+            document.getElementById("alertMsg").innerText = "Sedang berkomunikasi dengan gateway QRIS, mohon tunggu...";
+            document.getElementById("btnAlertClose").style.display = "none"; 
+            openSheet("globalAlertSheet");
+
+            try {
+                const response = await fetch("/api/qris/generate-qris", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: currentUser, amount: currentActiveNominal })
+                });
+
+                const text = await response.text();
+                let result;
+                try { result = JSON.parse(text); } catch (e) { throw new Error(text); }
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.error || result.message || "Gagal mendapatkan payload QRIS dari server.");
+                }
+
+                closeSheet("globalAlertSheet");
+                document.getElementById("btnAlertClose").style.display = "block"; 
+
+                document.getElementById("confTotal").innerText = "Rp" + currentActiveNominal.toLocaleString('id-ID');
+                document.getElementById("qrAmt").innerText = "Rp" + currentActiveNominal.toLocaleString('id-ID');
+                document.getElementById("qrTotal").innerText = "Rp" + currentActiveNominal.toLocaleString('id-ID');
+                document.querySelector("#sheetQrisDisplay .qris-frame img").src = result.qrImageUrl;
+
+                setTimeout(() => { openSheet("sheetQrisDisplay"); }, 350);
+            } catch (error) {
+                closeSheet("globalAlertSheet");
+                document.getElementById("btnAlertClose").style.display = "block";
+                setTimeout(() => {
+                    showAlertNotification("Gagal Membuat Order", error.message || "Terjadi kesalahan pada server gateway.", false);
+                }, 350);
+            }
+        }
+
+        // =============================================
+        // FUNGSI CATAT TRANSAKSI KE GITHUB & KIRIM TELEGRAM
+        // =============================================
+        async function simpanTransaksiKeGitHubSebelumKirim(transactionId, currentTime) {
+            const apiBase = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_TRANSAKSI}`;
+            
+            try {
+                const res = await fetch(`${apiBase}?ref=${BRANCH}&t=${Date.now()}`, { headers: { "Authorization": `token ${GITHUB_TOKEN}` } });
+                let transaksiData = [];
+                let fileSha = "";
+
+                if (res.ok) {
+                    const fileContent = await res.json();
+                    fileSha = fileContent.sha;
+                    try { transaksiData = JSON.parse(atob(fileContent.content)); } catch (e) { transaksiData = []; }
+                }
+
+                if (!Array.isArray(transaksiData)) transaksiData = [];
+
+                transaksiData.push({
+                    id: transactionId,
+                    user: currentUser,
+                    nominal: currentActiveNominal,
+                    status: "PENDING",
+                    date: currentTime
+                });
+
+                await fetch(apiBase, {
+                    method: "PUT",
+                    headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: `User @${currentUser} requested top-up of Rp${currentActiveNominal} (${transactionId})`,
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(transaksiData, null, 2)))),
+                        sha: fileSha,
+                        branch: BRANCH
+                    })
+                });
+                return true;
+            } catch (err) {
+                console.error("Gagal mencatat transaksi ke GitHub:", err);
+                return false;
+            }
+        }
+
+        async function handleKirimTelegram(event) {
+            event.preventDefault();
+            const btn = document.getElementById("btnSubmitTelegram");
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = `<span class="iconify" data-icon="solar:restart-bold-duotone" class="spin"></span> Menyimpan & Mengirim...`;
+            btn.style.pointerEvents = "none";
+
+            const transactionId = "TX-" + Math.floor(100000 + Math.random() * 900000);
+            const currentTime = new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+
+            // 1. Simpan status PENDING ke file transaksi GitHub
+            const successGithub = await simpanTransaksiKeGitHubSebelumKirim(transactionId, currentTime);
+            if(!successGithub) {
+                showAlertNotification("Gagal", "Gagal mencatat transaksi ke database GitHub.", false);
+                btn.innerHTML = originalText;
+                btn.style.pointerEvents = "auto";
+                return;
+            }
+
+            // 2. Susun Caption untuk Telegram Owner
+            const captionText = `📸 *BUKTI TOP-UP SALDO BARU*\n\n` +
+                                `👤 *User*: @${currentUser}\n` +
+                                `💰 *Nominal*: Rp${currentActiveNominal.toLocaleString('id-ID')}\n` +
+                                `🆔 *ID Transaksi*: ${transactionId}\n` +
+                                `🕒 *Waktu*: ${currentTime}\n\n` +
+                                `_Status: Menunggu konfirmasi admin di admin.html_`;
+
+            // 3. Kirim foto & caption ke Telegram Bot Owner
+            const formData = new FormData();
+            formData.append("chat_id", TELEGRAM_OWNER_ID);
+            formData.append("photo", document.getElementById("proofImage").files[0]);
+            formData.append("caption", captionText);
+            formData.append("parse_mode", "Markdown");
+
+            try {
+                const tgRes = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                    method: "POST",
+                    body: formData
+                });
+                const tgResult = await tgRes.json();
+
+                if(tgResult.ok) {
+                    closeSheet("sheetQrisDisplay");
+                    showAlertNotification("Berhasil", "Bukti transfer berhasil dikirim ke Owner! Silakan tunggu verifikasi admin.", true);
+                    document.getElementById("telegramForm").reset();
+                } else {
+                    throw new Error(tgResult.description || "Gagal mengirim ke Telegram");
+                }
+            } catch (err) {
+                showAlertNotification("Gagal Kirim", err.message, false);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.style.pointerEvents = "auto";
+            }
+        }
+
+        async function handleLogout() {
+            const currentDb = await fetchDatabase();
+            if(currentDb) {
+                const accIndex = currentDb.users.findIndex(u => u.user.toLowerCase() === currentUser.toLowerCase());
+                if(accIndex !== -1) {
+                    currentDb.users[accIndex].status = "offline";
+                    await saveDatabase(currentDb, globalSha, `User @${currentUser} Logged Out Successfully`);
+                }
+            }
+            localStorage.clear();
+            window.location.replace("index.html");
+        }
+    </script>
+</body>
+</html>
