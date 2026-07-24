@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="id">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZeroKageUI - Gateway System</title>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base Modern iOS Style */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f5f5f7; /* Background abu-abu putih khas Apple */
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+            color: #1d1d1f; /* Font hitam pekat khas iOS */
+            transition: background 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Ambient Background Glow (Sangat Lembut & Mewah) */
+        .ambient-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.4;
+            transition: all 0.8s ease;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #c7d2fe; top: -10%; right: -10%; }
+        .orb-2 { width: 350px; height: 350px; background: #f3e8ff; bottom: -10%; left: -10%; }
+
+        /* Container Utama dengan transisi mulus */
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* CARD VIEW (Landing & Login) */
+        .card-view {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 32px; /* Super rounded, tidak kaku */
+            padding: 40px 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* LANDING VIEW SPECIFIC */
+        #landingView {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Brand Icon iOS Style */
+        .ios-app-icon {
+            width: 72px;
+            height: 72px;
+            background: #ffffff;
+            border-radius: 20px; /* Bentuk squirclis khas icon iOS */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), inset 0 -3px 0 rgba(0, 0, 0, 0.02);
+            margin-bottom: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .ios-app-icon span {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Typography */
+        h1.headline {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+            color: #1d1d1f;
+            line-height: 1.25;
+            margin-bottom: 12px;
+        }
+
+        p.sub-headline {
+            font-size: 0.88rem;
+            color: #515154;
+            line-height: 1.5;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        /* Stats List - Vertikal Elegan seperti Widget Pengaturan iOS */
+        .stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 28px;
+        }
+
+        .stat-row-card {
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 16px 18px;
+            border-radius: 20px; /* Rounded konsisten */
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-row-card:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .stat-row-card .icon-wrap {
+            color: #4f46e5;
+            font-size: 1.3rem;
+            background: rgba(79, 70, 229, 0.06);
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .stat-row-card .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .stat-row-card .stat-val {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1d1d1f;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-row-card .stat-lbl {
+            font-size: 0.82rem;
+            color: #27272a;
+            font-weight: 700;
+        }
+
+        .stat-row-card .stat-desc {
+            font-size: 0.74rem;
+            color: #86868b;
+            line-height: 1.4;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* Button iOS/iPhoto Premium */
+        .btn-ios {
+            width: 100%;
+            padding: 16px;
+            background: #1d1d1f; /* Warna solid gelap kontras tinggi khas Apple */
+            color: #ffffff;
+            border: none;
+            border-radius: 99px; /* Bentuk Kapsul/Pill */
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 25px rgba(29, 29, 31, 0.15);
+        }
+
+        .btn-ios:hover {
+            transform: scale(1.02);
+            background: #000000;
+            box-shadow: 0 12px 28px rgba(29, 29, 31, 0.25);
+        }
+
+        .btn-ios:active {
+            transform: scale(0.97); /* Haptic Feedback Effect */
+        }
+
+        /* LOGIN VIEW SPECIFIC (Awalnya Tersembunyi) */
+        #loginView {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Form Controls */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 22px;
+            width: 100%;
+        }
+        .input-wrapper label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #86868b;
+            margin-bottom: 8px;
+        }
+        .login-input {
+            width: 100%;
+            padding: 15px 18px;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px; /* Rounded lembut */
+            color: #1d1d1f;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+        .login-input:focus {
+            outline: none;
+            border-color: rgba(79, 70, 229, 0.4);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+            background: #ffffff;
+        }
+
+        /* MODAL POPUP PREMIUM */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .modern-popup {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 28px;
+            width: 90%;
+            max-width: 350px;
+            padding: 35px 28px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            transform: scale(0.9) translateY(10px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active .modern-popup { transform: scale(1) translateY(0); }
+
+        .pop-icon {
+            width: 60px; height: 60px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; margin: 0 auto 20px auto;
+        }
+        .pop-icon.success { background: rgba(52, 211, 153, 0.1); color: #059669; border: 1px solid rgba(52, 211, 153, 0.2); }
+        .pop-icon.error { background: rgba(248, 113, 113, 0.1); color: #dc2626; border: 1px solid rgba(248, 113, 113, 0.2); }
+
+        .btn-pop-close {
+            margin-top: 20px; width: 100%; padding: 12px;
+            background: #1d1d1f; border: none;
+            color: #fff; border-radius: 99px; font-weight: 700; cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .btn-pop-close:hover { background: #000; }
+
+        /* BACK TO LANDING LINK */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: #86868b;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 24px;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+        .back-link:hover { color: #1d1d1f; }
+
+        /* =============================================
+        /* MASTER ANIMASI KEMUNCULAN (iOS INTRO)
+        /* ============================================= */
+        @keyframes fadeInDrift {
+            0% {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* State dasar tersembunyi sebelum animasi jalan */
+        .anim-item {
+            opacity: 0;
+            animation: fadeInDrift 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Efek Berurutan (Staggered Delay) */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.22s; }
+        .delay-3 { animation-delay: 0.34s; }
+        .delay-4 { animation-delay: 0.46s; }
+        .delay-5 { animation-delay: 0.58s; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Container Utama -->
+    <div class="app-container">
+
+        <!-- VIEW 1: LANDING PAGE -->
+        <div class="card-view" id="landingView">
+            <div class="ios-app-icon anim-item delay-1">
+                <span class="iconify" data-icon="solar:shield-keyhole-bold-duotone"></span>
+            </div>
+            
+            <h1 class="headline anim-item delay-2">ZeroKageUI Gateway</h1>
+            <p class="sub-headline anim-item delay-2">
+                Pintu gerbang enkripsi aman untuk mengotomatisasikan, menyederhanakan, dan memproteksi alur integrasi transaksi data Anda secara instan.
+            </p>
+            
+            <!-- Widget Stats List (Vertikal ke Bawah) -->
+            <div class="stats-list">
+                <!-- Stat 1 -->
+                <div class="stat-row-card anim-item delay-3">
+                    <div class="icon-wrap">
+                        <span class="iconify" data-icon="solar:users-group-two-rounded-bold-duotone"></span>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-val">1,240+ <span class="stat-lbl">User Aktif</span></span>
+                        <span class="stat-desc">Rekan dan pengguna berlisensi yang terhubung langsung di ekosistem gateway.</span>
+                    </div>
+                </div>
+                
+                <!-- Stat 2 -->
+                <div class="stat-row-card anim-item delay-4">
+                    <div class="icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.06);">
+                        <span class="iconify" data-icon="solar:double-alt-arrow-right-bold-duotone"></span>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-val">14,820+ <span class="stat-lbl">Total Transaksi</span></span>
+                        <span class="stat-desc">Akumulasi pertukaran data dan verifikasi yang sukses diproses secara real-time.</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-ios anim-item delay-5" onclick="navigateToLogin()">
+                Masuk ke Gateway <span class="iconify" data-icon="solar:arrow-right-broken"></span>
+            </button>
+        </div>
+
+        <!-- VIEW 2: LOGIN ACCESS (HIDDEN BY DEFAULT) -->
+        <div class="card-view" id="loginView">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div class="ios-app-icon" style="margin: 0 auto 16px auto;">
+                    <span class="iconify" data-icon="solar:lock-password-bold-duotone" style="color: #4f46e5;"></span>
+                </div>
+                <h1 class="headline" style="font-size: 1.4rem;">Otentikasi Kunci</h1>
+                <p style="color: #86868b; font-size: 0.82rem; font-weight: 500;">Silakan verifikasi identitas Anda untuk masuk</p>
+            </div>
+
+            <!-- Form Login Akses -->
+            <form id="gateLoginForm" onsubmit="handleLogin(event)">
+                <div class="input-wrapper">
+                    <label><span class="iconify" data-icon="solar:user-bold-duotone"></span> Username</label>
+                    <input type="text" id="authUsername" class="login-input" placeholder="Masukkan username..." autocomplete="off" required>
+                </div>
+
+                <div class="input-wrapper" style="margin-bottom: 30px;">
+                    <label><span class="iconify" data-icon="solar:key-bold-duotone"></span> Password</label>
+                    <input type="password" id="authPassword" class="login-input" placeholder="Masukkan password..." required>
+                </div>
+
+                <button type="submit" class="btn-ios" id="btnAuth">
+                    Konfirmasi Masuk
+                </button>
+            </form>
+
+            <div style="text-align: center;">
+                <a class="back-link" onclick="navigateToLanding()">
+                    <span class="iconify" data-icon="solar:arrow-left-broken"></span> Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- POP-UP MODERN TENGAH LAYAR -->
+    <div class="modal-overlay" id="popupOverlay">
+        <div class="modern-popup" id="popupCard">
+            <div class="pop-icon" id="popIconContainer">
+                <span class="iconify" id="popIcon" data-icon=""></span>
+            </div>
+            <h3 id="popTitle" style="font-weight: 700; font-size: 1.25rem; margin-bottom: 8px; color: #1d1d1f;"></h3>
+            <p id="popMessage" style="font-size: 0.88rem; color: #86868b; line-height: 1.5;"></p>
+            <div id="popActionSlot"></div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // CONFIG REPOSITORY DATABASE GITHUB
+        // =============================================
+        const REPO_OWNER = "rafelgbzzz";
+        const REPO_NAME = "zerokageui";
+        const BRANCH = "main";
+        const GITHUB_TOKEN = "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"; 
+        const FILE_BACKEND = "database";
+
+        // =============================================
+        // TRANSISI PAGE LANDING TO LOGIN (IOS STYLE)
+        // =============================================
+        function navigateToLogin() {
+            const landing = document.getElementById("landingView");
+            const login = document.getElementById("loginView");
+
+            landing.style.opacity = "0";
+            landing.style.transform = "scale(0.95)";
+            
+            setTimeout(() => {
+                landing.style.display = "none";
+                login.style.display = "block";
+                
+                // Triger reflow untuk transisi mulus
+                login.offsetHeight; 
+                
+                login.style.opacity = "1";
+                login.style.transform = "translateY(0)";
+            }, 300);
+        }
+
+        function navigateToLanding() {
+            const landing = document.getElementById("landingView");
+            const login = document.getElementById("loginView");
+
+            login.style.opacity = "0";
+            login.style.transform = "translateY(15px)";
+            
+            setTimeout(() => {
+                login.style.display = "none";
+                landing.style.display = "flex";
+                
+                landing.offsetHeight;
+                
+                landing.style.opacity = "1";
+                landing.style.transform = "scale(1)";
+            }, 300);
+        }
+
+        // =============================================
+        // FUNGSI POP-UP MODAL PUSAT
+        // =============================================
+        function triggerPopup(title, msg, type = "success") {
+            const overlay = document.getElementById("popupOverlay");
+            const iconContainer = document.getElementById("popIconContainer");
+            const icon = document.getElementById("popIcon");
+            const pTitle = document.getElementById("popTitle");
+            const pMsg = document.getElementById("popMessage");
+            const slot = document.getElementById("popActionSlot");
+
+            pTitle.innerText = title;
+            pMsg.innerText = msg;
+            slot.innerHTML = ''; 
+
+            if (type === "success") {
+                iconContainer.className = "pop-icon success";
+                icon.setAttribute("data-icon", "solar:check-circle-bold-duotone");
+            } else {
+                iconContainer.className = "pop-icon error";
+                icon.setAttribute("data-icon", "solar:danger-bold-duotone");
+                slot.innerHTML = `
+                    <a href="https://t.me/ZeroKageUi" target="_blank" style="display:inline-block; margin-top:16px; color:#4f46e5; font-weight:700; text-decoration:none; font-size:0.85rem;">Hubungi Admin Via Telegram ↗</a>
+                    <button class="btn-pop-close" onclick="closePopup()">Coba Lagi</button>
+                `;
+            }
+
+            overlay.style.display = "flex";
+            setTimeout(() => {
+                overlay.classList.add("active");
+            }, 10);
+        }
+
+        function closePopup() {
+            const overlay = document.getElementById("popupOverlay");
+            overlay.classList.remove("active");
+            setTimeout(() => {
+                overlay.style.display = "none";
+            }, 400); 
+        }
+
+        // =============================================
+        // DATABASE MANAGER GITHUB
+        // =============================================
+        async function fetchDatabase() {
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}?ref=${BRANCH}&t=${new Date().getTime()}`;
+            try {
+                const res = await fetch(url, { headers: { "Authorization": `token ${GITHUB_TOKEN}` } });
+                if (!res.ok) return null;
+                const data = await res.json();
+                return { sha: data.sha, data: JSON.parse(atob(data.content)) };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function saveDatabase(fullData, sha, msg) {
+            const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_BACKEND}`;
+            const body = {
+                message: msg,
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(fullData, null, 2)))),
+                sha: sha,
+                branch: BRANCH
+            };
+            await fetch(url, {
+                method: "PUT",
+                headers: { "Authorization": `token ${GITHUB_TOKEN}`, "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+        }
+
+        // =============================================
+        // CORE LOGIKA LOGIN REDIRECT
+        // =============================================
+        async function handleLogin(event) {
+            event.preventDefault(); 
+
+            const userVal = document.getElementById("authUsername").value.trim();
+            const passVal = document.getElementById("authPassword").value.trim();
+            const btn = document.getElementById("btnAuth");
+
+            btn.disabled = true;
+            btn.innerText = "Mengamankan Sesi...";
+
+            const dbFile = await fetchDatabase();
+            if (!dbFile) {
+                btn.disabled = false;
+                btn.innerText = "Konfirmasi Masuk";
+                return triggerPopup("Koneksi Gagal", "Gagal menghubungkan ke database awan utama!", "error");
+            }
+
+            let backendData = dbFile.data;
+
+            const userIndex = backendData.users.findIndex(u => u.user.toLowerCase() === userVal.toLowerCase() && u.pass === passVal);
+            
+            if (userIndex === -1) {
+                btn.disabled = false;
+                btn.innerText = "Konfirmasi Masuk";
+                return triggerPopup("Akses Ditolak", "Username atau sandi salah! Hubungi admin untuk akses.", "error");
+            }
+
+            backendData.users[userIndex].status = "online";
+            
+            btn.innerText = "Enkripsi Selesai...";
+            await saveDatabase(backendData, dbFile.sha, `User @${backendData.users[userIndex].user} Session Online`);
+
+            localStorage.setItem("session_user", backendData.users[userIndex].user);
+            localStorage.setItem("session_role", backendData.users[userIndex].role);
+            
+            const targetRole = backendData.users[userIndex].role.toLowerCase();
+
+            triggerPopup("Verifikasi Sukses", `Otentikasi berhasil. Selamat datang kembali, @${backendData.users[userIndex].user}!`, "success");
+            
+            setTimeout(() => { 
+                if (targetRole === "admin") {
+                    window.location.replace("admin.html"); 
+                } else {
+                    window.location.replace("user.html"); 
+                }
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
