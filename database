@@ -6,16 +6,13 @@
       "saldo": 1000000000,
       "status": "online",
       "role": "user"
-    }
-  ],
-  "transactions": [
+    },
     {
-      "id": "dpl_ht8aqyqfxvi",
-      "username": "zero",
-      "amount": 1000,
-      "status": "PAID",
-      "createdAt": "2026-07-17T21:15:40.083Z",
-      "processedAt": "2026-07-17T21:15:40.970Z"
+      "user": "admin",
+      "pass": "123",
+      "saldo": 500000000,
+      "status": "offline",
+      "role": "admin"
     }
   ],
   "riwayat": []
