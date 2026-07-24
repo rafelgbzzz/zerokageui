@@ -11,7 +11,7 @@
       "user": "admin",
       "pass": "123",
       "saldo": 500000000,
-      "status": "offline",
+      "status": "online",
       "role": "admin"
     }
   ],
