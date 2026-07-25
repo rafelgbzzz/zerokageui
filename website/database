@@ -1,0 +1,41 @@
+{
+  "users": [
+    {
+      "user": "zero",
+      "pass": "123",
+      "saldo": 1000102000,
+      "status": "online",
+      "role": "user"
+    },
+    {
+      "user": "admin",
+      "pass": "123",
+      "saldo": 500000000,
+      "status": "online",
+      "role": "admin"
+    }
+  ],
+  "riwayat": [
+    {
+      "id": "TX-1718821550123",
+      "user": "zero",
+      "nominal": 100000,
+      "date": "24/06/2026, 21:55:00",
+      "status": "SUKSES"
+    },
+    {
+      "id": "TX-992289",
+      "user": "zero",
+      "nominal": 1000,
+      "date": "25/7/2026, 00.13.51",
+      "status": "SUKSES"
+    },
+    {
+      "id": "TX-126706",
+      "user": "zero",
+      "nominal": 1000,
+      "date": "25/7/2026, 00.03.44",
+      "status": "SUKSES"
+    }
+  ]
+}
