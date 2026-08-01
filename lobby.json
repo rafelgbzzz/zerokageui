@@ -13,7 +13,8 @@
       "room_name": "Room rafel",
       "host": "rafel",
       "players": [
-        "rafel"
+        "rafel",
+        "pp"
       ]
     }
   ]
