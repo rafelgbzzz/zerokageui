@@ -50,5 +50,15 @@
     "nominal": 10000,
     "status": "PENDING",
     "date": "2/8/2026, 05.01.32"
+  },
+  {
+    "id": "WD-454563",
+    "type": "WITHDRAW",
+    "user": "zero",
+    "bank": "GOPAY",
+    "accountNo": "083175513695",
+    "nominal": 10000,
+    "status": "PENDING",
+    "date": "2/8/2026, 05.01.36"
   }
 ]
