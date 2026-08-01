@@ -3,7 +3,7 @@
     {
       "user": "zero",
       "pass": "123",
-      "saldo": 1000082750,
+      "saldo": 1000092750,
       "status": "offline",
       "role": "user"
     },
@@ -42,6 +42,13 @@
       "user": "zero",
       "nominal": 750,
       "date": "2/8/2026, 04.26.42",
+      "status": "SUKSES"
+    },
+    {
+      "id": "WD-839570",
+      "user": "zero",
+      "nominal": 10000,
+      "date": "2/8/2026, 05.01.32",
       "status": "SUKSES"
     }
   ]
