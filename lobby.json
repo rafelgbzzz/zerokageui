@@ -1,3 +1,12 @@
 {
-  "rooms": []
+  "rooms": [
+    {
+      "id": "room_1785622292490",
+      "room_name": "Room rafel",
+      "host": "rafel",
+      "players": [
+        "rafel"
+      ]
+    }
+  ]
 }
