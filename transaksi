@@ -33,5 +33,12 @@
     "nominal": 1000,
     "status": "DITOLAK",
     "date": "25/7/2026, 01.58.23"
+  },
+  {
+    "id": "TX-999264",
+    "user": "zero",
+    "nominal": 750,
+    "status": "PENDING",
+    "date": "2/8/2026, 04.26.42"
   }
 ]
