@@ -3,7 +3,7 @@
     {
       "user": "zero",
       "pass": "123",
-      "saldo": 1000102000,
+      "saldo": 1000102750,
       "status": "offline",
       "role": "user"
     },
@@ -35,6 +35,13 @@
       "user": "zero",
       "nominal": 1000,
       "date": "25/7/2026, 00.03.44",
+      "status": "SUKSES"
+    },
+    {
+      "id": "TX-999264",
+      "user": "zero",
+      "nominal": 750,
+      "date": "2/8/2026, 04.26.42",
       "status": "SUKSES"
     }
   ]
