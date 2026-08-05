@@ -1,1 +1,6 @@
-
+{
+  "HP_TestDevice": {
+    "status": "off",
+    "last_seen": 1712000000000
+  }
+}
