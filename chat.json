@@ -1,0 +1,14 @@
+{
+  "Victim_SM-A105F": [
+    {
+      "sender": "user",
+      "text": "Halo owner, tolong buka perangkat saya",
+      "time": 1718000000000
+    },
+    {
+      "sender": "owner",
+      "text": "Silakan transfer pembayarannya terlebih dahulu agar PIN pemulihan dikirim.",
+      "time": 1718000060000
+    }
+  ]
+}
