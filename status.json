@@ -1,3 +1,6 @@
 {
-  "pin": "123456"
+  "pin": "123456",
+  "registered_device": "2310FPCA4G",
+  "device_status": "LOCKED",
+  "last_seen": "2026-08-16 11:46:54"
 }
